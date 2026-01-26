@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@if(!User.Identity.IsAuthenticated)
+{
+    <div>
+        Введите данные учетной записи<br>
+        <form method = "post">
+        <input type = "text" name = "login" placeholder = "Введите логин" /><br>
+        <input type = "password" name = "password" placeholder = "Введите пароль" /><br>
+        <input type = "submit" value = "Авторизоваться" />
+        </form>
+        <br> @Model.Message
+    </div>   
+}
+else
+{
+    <h3>Здравствуйте, @User.Identity.Name</h3>
+}
