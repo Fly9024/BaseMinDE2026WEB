@@ -1,0 +1,78 @@
+﻿@page
+@model BaseMinDE2026WEB.Pages.RegistrationPageModel
+@{
+}
+
+<form method="post">
+    <p>
+        Введите логин<br />
+        <input type="text" id="login" required
+            onblur="loginValidate()"
+            pattern="[A-z0-9]{6,}"
+            title="Символы латиницы и цифры. Минимальная длина - 6 символов" 
+            asp-for="@Model.NewUser.Login"
+            />
+            <label id="message"></label>
+    </p>
+    <p>
+        Введите пароль<br />
+        <input type="password" required
+            pattern="{8,}"
+            title="Минимальная длина - 8 символов" 
+            asp-for="@Model.NewUser.Password"
+            />
+    </p>
+    <p>
+        Введите фамилию<br />
+        <input type="text" required
+               pattern="[А-я]+"
+               title="Символы кириллицы"
+               asp-for="@Model.NewUser.UserTable.Surname" />
+    </p>
+    <p>
+        Введите имя<br />
+        <input type="text" required
+               pattern="[А-я]+"
+               title="Символы кириллицы"
+               asp-for="@Model.NewUser.UserTable.Name" />
+    </p>
+    <p>
+        Введите отчество<br />
+        <input type="text" 
+               pattern="[А-я]+"
+               title="Символы кириллицы"
+               asp-for="@Model.NewUser.UserTable.Patronymic" />
+    </p>
+    <p>
+        Введите телефон<br />
+        <input type="tel" required id="phone"               
+               asp-for="@Model.NewUser.UserTable.Phone" />
+    </p>
+    <p>
+        Введите e-mail<br />
+        <input type="email" required                
+               asp-for="@Model.NewUser.UserTable.Email" />
+    </p>
+    <input type="submit" value="Зарегистрироваться" />
+</form>
+
+ <script>
+  //маска ввода для нее нужно скачать и подключить отдельную библиотеку jquery.maskedinput.min.js
+   $("#phone").mask("8(999)999-99-99");
+
+    async function loginValidate() {//асинхронная функция проверки уникальности логина
+        const login = document.getElementById('login');//получаем логин с формы
+        const message = document.getElementById('message');//получаем надпись с формы
+        //запрос на проверку уникальности логина. Возвращает true/false в виде текста
+        const responce = await fetch("/RegistrationPage?handler=LoginValidate&login=" + login.value);
+       //в зависимости от существования логина в базе выводим уведомление и ставим валидаторы
+        if (await responce.text() === 'True') {
+            message.innerText = "Данный логин уже занят";
+            login.setCustomValidity('Логин должен быть уникальным');
+        }
+        else {
+            message.innerText = '';
+            login.setCustomValidity('');
+        }
+    }
+</script> 
