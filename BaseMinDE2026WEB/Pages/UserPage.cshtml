@@ -2,3 +2,33 @@
 @model BaseMinDE2026WEB.Pages.UserPageModel
 @{
 }
+<h1>Список заявок пользователя @User.Identity.Name</h1>
+<ul>
+    @foreach(var order in Model.UserOrders)
+    {
+        <li>
+            <p>
+                Название курса<br>
+                @order.IdCourseNavigation.Name
+            <p/>
+            <p>
+                Дата начала<br>
+                @order.StartDate
+            <p/>
+            <p>
+                Тип оплаты<br>
+                @order.IdPaymentTypeNavigation.Name
+            <p/>
+            <p>
+                Название курса<br>
+                @order.IdCourseNavigation.Name
+            <p/>
+            <p>
+                Статус<br>
+                @order.IdStatusNavigation.Name
+            <p/>
+        </li>
+    }
+
+</ul>
+<a href="AddOrderPage">Добавить заявку</a>

@@ -1,0 +1,43 @@
+﻿@page
+@model BaseMinDE2026WEB.Pages.AddOrderPageModel
+@{
+}
+<h1>Страница добавления заявки пользователя @User.Identity.Name</h1>
+<form method="post">
+   <p>
+       Выберите курс: <br />
+        <select asp-items="@Model.Cources
+                .Select(x => new SelectListItem(x.Name, x.IdCource.ToString()))"
+        asp-for="@Model.NewOrder.IdCourse">
+        </select>
+   </p>
+    <p>
+        Введите желаемую дату начала обучения:<br />
+        <input type="text" id="dateinput" onblur="dateValidate()"
+            asp-for="@Model.NewOrder.StartDate" />
+    </p>  
+   <p>
+       Выберите тип оплаты: <br />
+        <select asp-items="@Model.PaymentTypes
+                .Select(x => new SelectListItem(x.Name, x.IdPaymentType.ToString()))"
+        asp-for="@Model.NewOrder.IdPaymentType">
+        </select>
+   </p>
+    <input type="submit" value="Создать заявку" />
+    
+</form>
+
+<script>
+        $("#dateinput").mask("99.99.2029");      
+        
+    function dateValidate() {
+        let datebox = document.getElementById("dateinput");
+        const dateparts = datebox.value.split('.');
+        if (new Date(`${dateparts[2]}-${dateparts[1]}-${dateparts[0]}`) == 'Invalid Date') {
+            datebox.setCustomValidity('Введена неверная дата');
+        }
+        else {
+            datebox.setCustomValidity('');
+        }
+    }
+</script>
