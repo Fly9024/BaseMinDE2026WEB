@@ -2,38 +2,74 @@
 @model BaseMinDE2026WEB.Pages.AdminPageModel
 @{
 }
+<div>
+    <form>
+        <p>
+            Поиск по пользователю:<br />
+            <input type="text" name="textFind" id="textFind"/>
+        </p>
+        <p>
+            Фильтр по статусам:<br />
+            <select name="statusFilter" id="statusFilter" asp-items="@Model.FilterStatuses.Select(
+             x=> new SelectListItem(x.Name,x.IdOrderStatus.ToString()))">
+         </select>
+        </p>
+        <p>
+            Сортировка по дате:<br />
+            <select name="dateOrder" id="dateOrder">
+                <option value="1" selected>Сналача новые</option>
+                <option value="2">Сналача старые</option>
+            </select>
+        </p>
+        <input type="submit" value="Применить фильтры" />
+    </form>
+</div>
 
-<ul>
-    @foreach (var order in Model.UserOrders)
-    {
-        <li>
-            <p>
-                <b>Название курса:</b>
-                @order.IdCourseNavigation.Name
-            <p />
-            <p>
-                <b>Дата начала:</b>
-                @order.StartDate
-            <p />
-            <p>
-                <b>Тип оплаты:</b>
-                @order.IdPaymentTypeNavigation.Name
-            <p />
-            <p>
-                <b>Статус:</b>
-                <select asp-items="@Model.OrderStatuses //Источник данных - все статусы заявок
-                    .Select(x => new SelectListItem( //переводим статусы из списка статоусо в формат, подходящий для раскрывающегося списка на клиенте
-                        x.Name, //первый аргумент - значение, которое видит пользователь
-                        x.IdOrderStatus.ToString(), //второй - value (то, что уйдет на сервер), третий (опционально) делает элемент выбранным, если условие верно
-                        x.IdOrderStatus==order.IdStatus))" 
+<div>
+    <ul>
+        @foreach (var order in Model.UserOrders)
+        {
+            <li>
+                <p>
+                    <b>Пользователь:</b>
+                    @order.User
+                <p />
+                <p>
+                    <b>Название курса:</b>
+                    @order.IdCourseNavigation.Name
+                <p />
+                <p>
+                    <b>Дата начала:</b>
+                    @order.StartDate
+                <p />
+                <p>
+                    <b>Тип оплаты:</b>
+                    @order.IdPaymentTypeNavigation.Name
+                <p />
+                <p>
+                    <b>Статус:</b>
+                    <select asp-items="@Model.OrderStatuses //Источник данных - все статусы заявок
+                                                .Select(x => new SelectListItem( //переводим статусы из списка статоусо в формат, подходящий для раскрывающегося списка на клиенте
+                                                    x.Name, //первый аргумент - значение, которое видит пользователь
+                                                    x.IdOrderStatus.ToString(), //второй - value (то, что уйдет на сервер), третий (опционально) делает элемент выбранным, если условие верно
+                                                    x.IdOrderStatus == order.IdStatus))"
                         onchange="statusChanged(@order.IdOrder, this.value)" @* при изменении пункта списка передается в функцию id заявки и значение измененного статуса (value) *@
-                ></select>                
-            <p />             
+                ></select>
+            <p />
         </li>
-    }
-</ul>
+                }
+    </ul>
+</div>
+
 
 <script>
+    @* считывание параметров сортировки и фильтрации из поисковой строки браузера *@
+    const urlParams = new URLSearchParams(window.location.search); @* сами параметры *@
+    @* и их присвоение полям с сортировками и фильтрами *@    
+    document.getElementById('textFind').value = urlParams.get('textFind');
+    document.getElementById('statusFilter').value = urlParams.get('statusFilter') ?? 0; @* тут еще делаем проверку на null для присваивания значений по умолчанию*@
+    document.getElementById('dateOrder').value = urlParams.get('dateOrder') ?? 1;
+   
    async function statusChanged(idOrder, idStatus) {
         const URLstring = "/AdminPage?handler=ChangeStatus&idOrder=" + idOrder + "&idStatus=" + idStatus;
         fetch(URLstring);

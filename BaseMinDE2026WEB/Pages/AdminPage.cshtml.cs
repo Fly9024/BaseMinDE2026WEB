@@ -10,15 +10,41 @@ namespace BaseMinDE2026WEB.Pages
     public class AdminPageModel(DeWeb2026Context db) : PageModel
     {
         public List<OrderStatusTable> OrderStatuses => db.OrderStatusTables.ToList();
+        
+        //получаем список со статусами для фильтрации путем добавления пункта со всеми статусами к предыдущему списку
+        public List<OrderStatusTable> FilterStatuses => 
+            [new OrderStatusTable(){ Name ="Все статусы", IdOrderStatus=0 },
+            ..OrderStatuses];
 
-        public List<OrderTable> UserOrders => db.OrderTables
+       //список получается сразу со всеми сортировками и фильтрами, если они установлены
+        public List<OrderTable> UserOrders { get; set; }
+        
+        //для фильтрации используем тот же метод OnGet. Если параметры сортировок и фильтров не применены, то они будут игнорироваться в методе
+        public void OnGet(string textFind, int dateOrder, int statusFilter)
+        {
+            UserOrders = db.OrderTables
            .Include(x => x.IdCourseNavigation)
            .Include(x => x.IdPaymentTypeNavigation)
-           .Include(x => x.IdStatusNavigation)          
+           .Include(x => x.IdStatusNavigation)           
            .ToList();
-        public void OnGet()
-        {
-        }
+
+            //сортировка по дате
+            UserOrders = dateOrder == 2 ?
+                UserOrders.OrderBy(x => x.StartDate).ToList() :
+                UserOrders.OrderByDescending(x => x.StartDate).ToList();
+
+            //фильтр по тексту, если он не пустой
+            if(!string.IsNullOrEmpty(textFind))
+            {
+                UserOrders = UserOrders.Where(x=>x.User.StartsWith(textFind)).ToList();
+            }
+            //фильтр по статусу, если он выбран
+            if (statusFilter != 0)
+            {
+                UserOrders = UserOrders.Where(x=>x.IdStatus == statusFilter).ToList();
+            }
+
+        }       
 
         public void OnGetChangeStatus(int idOrder, int idStatus)
         {
