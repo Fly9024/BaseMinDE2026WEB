@@ -18,5 +18,12 @@ namespace BaseMinDE2026WEB.Pages
         public void OnGet()
         {
         }
+        public IActionResult OnPost(int idOrder, string reviev) 
+        { 
+            OrderTable order = db.OrderTables.FirstOrDefault(x=>x.IdOrder == idOrder);
+            order.Reviev = reviev;
+            db.SaveChanges();
+            return RedirectToPage("UserPage");
+        }
     }
 }

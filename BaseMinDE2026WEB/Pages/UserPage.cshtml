@@ -8,25 +8,35 @@
     {
         <li>
             <p>
-                Название курса<br>
+                <b>Название курса:</b>
                 @order.IdCourseNavigation.Name
             <p/>
             <p>
-                Дата начала<br>
+                <b>Дата начала:</b>
                 @order.StartDate
             <p/>
             <p>
-                Тип оплаты<br>
+                <b>Тип оплаты:</b>
                 @order.IdPaymentTypeNavigation.Name
             <p/>
             <p>
-                Название курса<br>
-                @order.IdCourseNavigation.Name
-            <p/>
-            <p>
-                Статус<br>
+                <b>Статус:</b>
                 @order.IdStatusNavigation.Name
             <p/>
+                @if (order.IdStatus == 3)
+                {
+                    @if (order.Reviev != null){
+                    <label>Отзыв о курсе: @order.Reviev</label>
+                     }
+
+                    <form method="post">
+                        <p>Добавить/изменить отзыв</p>
+                        <input type="hidden" name="idOrder" value="@order.IdOrder" />
+                        <input type="text" name="reviev" />
+                        <input type="submit" value="Отправить"/>
+                    </form>                            
+                }
+
         </li>
     }
 

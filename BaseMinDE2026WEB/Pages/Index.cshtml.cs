@@ -35,7 +35,7 @@ namespace BaseMinDE2026WEB.Pages
                 var authProperties = new AuthenticationProperties
                 {
                     IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddSeconds(10)
+                    ExpiresUtc = DateTime.UtcNow.AddSeconds(60)
                 };
                 await HttpContext.SignInAsync(
                  CookieAuthenticationDefaults.AuthenticationScheme,
