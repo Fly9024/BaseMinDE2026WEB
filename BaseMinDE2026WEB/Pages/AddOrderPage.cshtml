@@ -1,6 +1,7 @@
 ﻿@page
 @model BaseMinDE2026WEB.Pages.AddOrderPageModel
 @{
+    ViewData["Title"] = "Страница создания заявки";
 }
 <h1>Страница добавления заявки пользователя @User.Identity.Name</h1>
 <form method="post">
@@ -28,13 +29,16 @@
 </form>
 
 <script>
+
+    // валидация ввода даты через jquery.maskedinput.min.js число 9 - символ для подстановки
         $("#dateinput").mask("99.99.2029");      
         
+    //проверка корректности даты, т.к. ее по заданию необходимо сделать через текстовое поле
     function dateValidate() {
         let datebox = document.getElementById("dateinput");
-        const dateparts = datebox.value.split('.');
+        const dateparts = datebox.value.split('.'); //разделяем части даты по символу точки, затем конвертируем их в объект Date
         if (new Date(`${dateparts[2]}-${dateparts[1]}-${dateparts[0]}`) == 'Invalid Date') {
-            datebox.setCustomValidity('Введена неверная дата');
+            datebox.setCustomValidity('Введена неверная дата');//если сконвертировалось с ошибкой, устанавливаем кастомный валидатор
         }
         else {
             datebox.setCustomValidity('');

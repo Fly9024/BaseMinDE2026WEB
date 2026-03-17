@@ -1,9 +1,13 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Главная страница";
 }
-
+@* это html-код слайдера
+4 картинки одинакового размера (я их предварительно выровнял в графическом редакторе)
+далее две кнопки - вперед и назад.
+здесь есть анимация смены слайда и стилевое оформление (все стили в wwwroot/css/site.css)
+*@
 <div class="slider">
     <div class="slides">       
         <img src="~/media/image06.jpg" />   
@@ -16,8 +20,7 @@
 </div>
 
 
-
-
+@* проверка на аутентифицированного пользователя если не вошел, то показывается форма авторизации *@
 @if(!User.Identity.IsAuthenticated)
 {
     <div style="text-align: center;">
@@ -31,20 +34,21 @@
         <a href="RegistrationPage">Еще не зарегистрированы? Регистрация</a>
     </div>   
 }
-else
+else @* если уже вошел в систему, то выводится имя (в данном случае, логин авторизованного пользователя) *@
 {
     <h3>Здравствуйте, @User.Identity.Name</h3>
 }
 
+@* скрипты поместил на ту же страницу, чтобы удобнее было анализировать  *@
 <script>
+    //получаем как объекты элементы с формы
     const nextButton = document.getElementById('next');
     const prevButton = document.getElementById('prev');
     const slides = document.querySelector('.slides');
-    const countImages = document.querySelectorAll('.slides img').length;
-    let slideIndex = 0;
-    let countOnPage = 4;   
-    let interval = setInterval(goSlider, 3000, "auto");
-    function goSlider(position) {
+    const countImages = document.querySelectorAll('.slides img').length;//вычитсляем длину (на тот случай, если вдруг изображений будет вставлено не 4)
+    let slideIndex = 0;      
+    let interval = setInterval(goSlider, 3000, "auto");//ставим таймер на функцию смены изображения (имитируем действие "вперед")
+    function goSlider(position) {//в зависимости от позиции движемся впереди или назад и останавливаем таймер
         switch (position) {
             case "next":
                 clearInterval(interval);
@@ -56,7 +60,6 @@ else
                 slideIndex = slideIndex <= 0 ? countImages-1 : slideIndex - 1;
                 break;
         }
-        slides.style.transform = `translateX(${-slideIndex * 100}%)`;
+        slides.style.transform = `translateX(${-slideIndex * 100}%)`;//просто сдвигаем поле на значение, равное ширине изображения
     }
-
 </script>

@@ -1,9 +1,10 @@
 ﻿@page
 @model BaseMinDE2026WEB.Pages.UserPageModel
 @{
+    ViewData["Title"] = "Страница просмотра заявок пользователя";
 }
 <h1>Список заявок пользователя @User.Identity.Name</h1>
-<ul class="hr">
+<ul class="hr"> @* здесь мы просто выводим список из модели в список html. стили для визуализации этого списка в виде карточек описаны в site.css*@
     @foreach(var order in Model.UserOrders)
     {
         <li class="item">
@@ -23,12 +24,11 @@
                 <b>Статус:</b>
                 @order.IdStatusNavigation.Name
             <p/>
-                @if (order.IdStatus == 3)
+                @if (order.IdStatus == 3)//форма добавления отзыва становится доступной только, если статус у заявки "завершена"
                 {
                     @if (order.Reviev != null){
                     <label>Отзыв о курсе: @order.Reviev</label>
-                     }
-
+                     }                     
                     <form method="post">
                         <p>Добавить/изменить отзыв</p>
                         <input type="hidden" name="idOrder" value="@order.IdOrder" />
@@ -36,9 +36,7 @@
                         <input type="submit" value="Отправить"/>
                     </form>                            
                 }
-
         </li>
     }
-
 </ul>
 <a href="AddOrderPage">Добавить заявку</a>

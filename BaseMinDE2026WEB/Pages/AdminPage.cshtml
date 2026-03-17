@@ -2,7 +2,7 @@
 @model BaseMinDE2026WEB.Pages.AdminPageModel
 @{
 }
-<div >
+<div> @* блок с сортировками, фильтрами и пагинацией *@
     <form style="display:flex;">
         <p>
             Поиск по пользователю:<br />
@@ -32,7 +32,7 @@
        
         <input type="submit" value="Применить фильтры" />
         <p style="display:flex">
-            @* кнопки страниц*@
+            @* кнопки страниц пагинации*@
             Перейти на страницу:<br>
             @for (int i = 1; i <= Model.NPages; i++)
             {
@@ -42,11 +42,11 @@
     </form>
 </div>
 
-<div>
-    <ul>
+<div> @* практически полная аналогия с заявками на странице пользователя, только с возможностью изменения статуса *@
+    <ul class="hr">
         @foreach (var order in Model.UserOrders)
         {
-            <li>
+            <li class="item">
                 <p>
                     <b>Пользователь:</b>
                     @order.User
@@ -66,12 +66,11 @@
                 <p>
                     <b>Статус:</b>
                     <select asp-items="@Model.OrderStatuses //Источник данных - все статусы заявок
-                                                .Select(x => new SelectListItem( //переводим статусы из списка статоусо в формат, подходящий для раскрывающегося списка на клиенте
-                                                    x.Name, //первый аргумент - значение, которое видит пользователь
-                                                    x.IdOrderStatus.ToString(), //второй - value (то, что уйдет на сервер), третий (опционально) делает элемент выбранным, если условие верно
-                                                    x.IdOrderStatus == order.IdStatus))"
-                        onchange="statusChanged(@order.IdOrder, this.value)" @* при изменении пункта списка передается в функцию id заявки и значение измененного статуса (value) *@
-                ></select>
+                        .Select(x => new SelectListItem( //переводим статусы из списка статоусо в формат, подходящий для раскрывающегося списка на клиенте
+                            x.Name, //первый аргумент - значение, которое видит пользователь
+                            x.IdOrderStatus.ToString(), //второй - value (то, что уйдет на сервер), третий (опционально) делает элемент выбранным, если условие верно
+                            x.IdOrderStatus == order.IdStatus))"
+                                            onchange="statusChanged(@order.IdOrder, this.value)"></select>@* при изменении пункта списка передается в функцию id заявки и значение измененного статуса (value) *@
             <p />
         </li>
                 }
@@ -87,9 +86,8 @@
     document.getElementById('statusFilter').value = urlParams.get('statusFilter') ?? 0; @* тут еще делаем проверку на null для присваивания значений по умолчанию*@
     document.getElementById('dateOrder').value = urlParams.get('dateOrder') ?? 1;
     document.getElementById('countOnPage').value = urlParams.get('countOnPage') ?? 0;
-
-
     
+    @* асинхронная функция на изменение статуса заявки *@
    async function statusChanged(idOrder, idStatus) {
         const URLstring = "/AdminPage?handler=ChangeStatus&idOrder=" + idOrder + "&idStatus=" + idStatus;
         fetch(URLstring);

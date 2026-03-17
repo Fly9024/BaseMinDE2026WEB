@@ -9,6 +9,7 @@ namespace BaseMinDE2026WEB.Pages
     [Authorize]
     public class UserPageModel(DeWeb2026Context db) : PageModel
     {
+        //сами заявки пользователя (фильтр всех заявок по логину)
         public List<OrderTable> UserOrders =>db.OrderTables
             .Include(x=>x.IdCourseNavigation)
             .Include(x=>x.IdPaymentTypeNavigation)
@@ -18,8 +19,10 @@ namespace BaseMinDE2026WEB.Pages
         public void OnGet()
         {
         }
+        //обработчик запроса на изменение статуса
         public IActionResult OnPost(int idOrder, string reviev) 
         { 
+            //находим заявку в базе, приписываем к ней отзыв и сохраняем изменения
             OrderTable order = db.OrderTables.FirstOrDefault(x=>x.IdOrder == idOrder);
             order.Reviev = reviev;
             db.SaveChanges();

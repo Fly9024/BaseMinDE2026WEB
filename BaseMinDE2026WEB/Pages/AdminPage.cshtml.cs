@@ -20,13 +20,12 @@ namespace BaseMinDE2026WEB.Pages
             ..OrderStatuses];
 
        //список получается сразу со всеми сортировками и фильтрами, если они установлены
-        public List<OrderTable> UserOrders { get; set; }
-        
+        public List<OrderTable> UserOrders { get; set; } = new List<OrderTable>();//не забудьте выделить память под список, а то будет ошибка
+
         //для фильтрации используем тот же метод OnGet. Если параметры сортировок и фильтров не применены, то они будут игнорироваться в методе
         public void OnGet(string textFind, int dateOrder, int statusFilter, int countOnPage,int nPage)
-        {
-            
-
+        {            
+            //сначала получаем весь список заявок
             UserOrders = db.OrderTables
            .Include(x => x.IdCourseNavigation)
            .Include(x => x.IdPaymentTypeNavigation)
@@ -48,7 +47,7 @@ namespace BaseMinDE2026WEB.Pages
             {
                 UserOrders = UserOrders.Where(x=>x.IdStatus == statusFilter).ToList();
             }
-
+            //определяем количество страниц для пагинации
             NPages =countOnPage==0?1: UserOrders.Count/countOnPage;//это не совсем верная формула для подсчета количества странц, зато быстро
 
             //отображение на странице
@@ -56,10 +55,9 @@ namespace BaseMinDE2026WEB.Pages
             {
                 UserOrders = UserOrders.Skip(countOnPage* nPage).Take(countOnPage).ToList();
             }
-
-
         }       
 
+        //метод для смены статуса заявки
         public void OnGetChangeStatus(int idOrder, int idStatus)
         {
             //находим заявку по известному id

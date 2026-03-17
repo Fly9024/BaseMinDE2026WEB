@@ -15,15 +15,13 @@ namespace BaseMinDE2026WEB.Pages
         {
         }
 
-
+        //это обработчик запроса на регистрацию со страницы. все поля уже прошли валидацию и поместились с помощью привязок в объект с новым пользователем
         public IActionResult OnPost() 
         {
             db.LoginTables.Add(NewUser);
             db.SaveChanges();
-            return RedirectToPage("/Index");
-        
+            return RedirectToPage("/Index");        
         }
-
         public IActionResult OnGetLoginValidate(string login)//обработчик запроса на получение логина
             => Content(db.LoginTables //возвращаем текст
                 .Select(x => x.Login) //делаем проекцию к столбцу с логином
