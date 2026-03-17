@@ -3,9 +3,24 @@
 @{
     ViewData["Title"] = "Home page";
 }
+
+<div class="slider">
+    <div class="slides">       
+        <img src="~/media/image06.jpg" />   
+        <img src="~/media/image08.jpg" />
+        <img src="~/media/image09.jpg" />
+        <img src="~/media/image11.jpg" />      
+    </div>
+    <button onclick="goSlider('prev')" class="slider-btn prev-btn">❮</button>
+    <button onclick="goSlider('next')" class="slider-btn next-btn">❯</button>
+</div>
+
+
+
+
 @if(!User.Identity.IsAuthenticated)
 {
-    <div>
+    <div style="text-align: center;">
         Введите данные учетной записи<br>
         <form method = "post">
         <input type = "text" name = "login" placeholder = "Введите логин" /><br>
@@ -20,3 +35,28 @@ else
 {
     <h3>Здравствуйте, @User.Identity.Name</h3>
 }
+
+<script>
+    const nextButton = document.getElementById('next');
+    const prevButton = document.getElementById('prev');
+    const slides = document.querySelector('.slides');
+    const countImages = document.querySelectorAll('.slides img').length;
+    let slideIndex = 0;
+    let countOnPage = 4;   
+    let interval = setInterval(goSlider, 3000, "auto");
+    function goSlider(position) {
+        switch (position) {
+            case "next":
+                clearInterval(interval);
+            case "auto":
+                slideIndex = slideIndex >= countImages-1 ? 0 : slideIndex + 1;
+                break;
+            case "prev":
+                clearInterval(interval);
+                slideIndex = slideIndex <= 0 ? countImages-1 : slideIndex - 1;
+                break;
+        }
+        slides.style.transform = `translateX(${-slideIndex * 100}%)`;
+    }
+
+</script>

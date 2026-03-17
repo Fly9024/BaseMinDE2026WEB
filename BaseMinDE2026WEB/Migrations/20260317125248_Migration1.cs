@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BaseMinDE2026WEB.Migrations
 {
     /// <inheritdoc />
@@ -126,6 +128,40 @@ namespace BaseMinDE2026WEB.Migrations
                         principalTable: "user_table",
                         principalColumn: "login",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "cource_table",
+                columns: new[] { "id_cource", "name" },
+                values: new object[,]
+                {
+                    { 1, "Основы веб-дизайна" },
+                    { 2, "Основы алгоритмизации и программирования" },
+                    { 3, "Основы проектирования баз данных" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "login_table",
+                columns: new[] { "login", "is_admin", "password" },
+                values: new object[] { "Admin", true, "KorokNET" });
+
+            migrationBuilder.InsertData(
+                table: "order_status_table",
+                columns: new[] { "id_order_status", "name" },
+                values: new object[,]
+                {
+                    { 1, "Новая" },
+                    { 2, "Идет обучение" },
+                    { 3, "Обучение завершено" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "payment_type_table",
+                columns: new[] { "id_payment_type", "name" },
+                values: new object[,]
+                {
+                    { 1, "наличные" },
+                    { 2, "перевод" }
                 });
 
             migrationBuilder.CreateIndex(

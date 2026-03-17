@@ -1,31 +1,155 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    font-size: 14px;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #2A3B41; /*цвет фона для страницы сизый*/
+    color: #FF3B05; /*цвет текста оранжевый*/
 }
 
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
+}
+
+
+table, table tr, table td, table th {
+    table-layout: fixed;
+    width: 100%;
+    overflow-wrap: break-word;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.show-hide {
+    display: none;
+}
+
+select {
+    width: 100%;
+}
+
+/*стиль для карточек на странице пользователя*/
+
+ul.hr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    justify-content: center;
+}
+
+li.item {
+    border-radius: 10px;
+    width: 200px;
+    background-color: white;
+    text-align: center;
+    list-style-type: none; /* Убирает маркер */
+    color: #2A3B41;
+    margin: 5px;
+    padding: 15px 0 0 0;
+}
+
+button, input[type="text"], input[type="password"], textarea {
+    border-radius: 5px;
+}
+
+.active { /*стиль для активной кнопки пагинации*/
+    background: #FF3B05;
+}
+
+
+
+@media (max-width: 500px) {
+    html {
+        font-size: 20px;
+    }
+
+    li.item {
+        width: 300px;
+    }
+}
+
+
+/*стили для слайдера:*/
+.slider { /* родительский контейнер для всего слайдера */
+
+    background-color: white;
+    border-radius: 20px;
+    position: relative; /* относительное позиционирование. нужно для того, чтобы другие элементы сдвигать относительно него */
+    width: 50%; /* в половину экрана. высота подстраивается под ширину*/
+    margin: 0 auto; /*автоматические отступы по бокам*/
+    overflow: hidden; /* обрезает и скрывает всё содержимое, выходящее за границы элемента */
+}
+
+.slides { /*общий контейнер для всех изображений в слайдере*/
+    display: flex; /* для адаптивности*/    
+    transition: all 0.5s ease; /* микроанимация смены изображения*/
+    align-items: center; /* выравнивание изображений*/
+}
+
+.slides img { /* стиль для конкретно самого изображения*/
+    width: 100%; /*чтобы изображение занимало контейнер целиком */
+    position: center; /* расположение по центру*/
+    padding: 1%; /* внутренний отступ элемента устанавливается равным 1% от ширины его родительского элемента */
+}
+
+.slider-btn {
+    position: absolute; /* абсолютное позиционирование */
+    top: 50%; /* на высоте 50% */
+    transform: translateY(-50%); /* и еще на половину его собственной высоты, чтобы точно был по центру */
+    background: rgba(0, 0, 0, 0.5); /* черный полупрозрачный */
+    color: white; /* цвет самого текста */
+    border: none;
+    padding: 10px;
+    cursor: pointer; /* изменяем вид курсора при наведении */
+    z-index: 100; /* Гарантирует, что кнопки будут поверх изображений */
+}
+
+.prev-btn {
+    left: 10px; /* небольшой отступ от левого края */
+}
+
+.next-btn {
+    right: 10px; /* небольшой отступ от правого края */
+}
+
+/*стиль для карточек на странице пользователя*/
+
+ul.hr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    justify-content: center;
+}
+
+li.item {
+    border-radius: 10px;
+    width: 200px;
+    background-color: white;
+    text-align: center;
+    list-style-type: none; /* Убирает маркер */
+    color: #2A3B41;
+    margin: 5px;
+    padding: 15px 0 0 0;
+}
+
+button, input[type="text"], input[type="password"], textarea {
+    border-radius: 5px;
 }

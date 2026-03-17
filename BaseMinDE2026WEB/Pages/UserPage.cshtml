@@ -3,10 +3,10 @@
 @{
 }
 <h1>Список заявок пользователя @User.Identity.Name</h1>
-<ul>
+<ul class="hr">
     @foreach(var order in Model.UserOrders)
     {
-        <li>
+        <li class="item">
             <p>
                 <b>Название курса:</b>
                 @order.IdCourseNavigation.Name

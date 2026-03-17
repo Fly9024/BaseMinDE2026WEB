@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BaseMinDE2026WEB.Migrations
 {
     [DbContext(typeof(DeWeb2026Context))]
-    [Migration("20260317055754_Migration1")]
+    [Migration("20260317125248_Migration1")]
     partial class Migration1
     {
         /// <inheritdoc />
@@ -43,6 +43,23 @@ namespace BaseMinDE2026WEB.Migrations
                         .HasName("cource_table_pk");
 
                     b.ToTable("cource_table", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdCource = 1,
+                            Name = "Основы веб-дизайна"
+                        },
+                        new
+                        {
+                            IdCource = 2,
+                            Name = "Основы алгоритмизации и программирования"
+                        },
+                        new
+                        {
+                            IdCource = 3,
+                            Name = "Основы проектирования баз данных"
+                        });
                 });
 
             modelBuilder.Entity("BaseMinDE2026WEB.Models.LoginTable", b =>
@@ -64,6 +81,14 @@ namespace BaseMinDE2026WEB.Migrations
                         .HasName("login_table_pk");
 
                     b.ToTable("login_table", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Login = "Admin",
+                            IsAdmin = true,
+                            Password = "KorokNET"
+                        });
                 });
 
             modelBuilder.Entity("BaseMinDE2026WEB.Models.OrderStatusTable", b =>
@@ -84,6 +109,23 @@ namespace BaseMinDE2026WEB.Migrations
                         .HasName("order_status_table_pk");
 
                     b.ToTable("order_status_table", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdOrderStatus = 1,
+                            Name = "Новая"
+                        },
+                        new
+                        {
+                            IdOrderStatus = 2,
+                            Name = "Идет обучение"
+                        },
+                        new
+                        {
+                            IdOrderStatus = 3,
+                            Name = "Обучение завершено"
+                        });
                 });
 
             modelBuilder.Entity("BaseMinDE2026WEB.Models.OrderTable", b =>
@@ -154,6 +196,18 @@ namespace BaseMinDE2026WEB.Migrations
                         .HasName("payment_type_table_pk");
 
                     b.ToTable("payment_type_table", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdPaymentType = 1,
+                            Name = "наличные"
+                        },
+                        new
+                        {
+                            IdPaymentType = 2,
+                            Name = "перевод"
+                        });
                 });
 
             modelBuilder.Entity("BaseMinDE2026WEB.Models.UserTable", b =>
