@@ -2,8 +2,8 @@
 @model BaseMinDE2026WEB.Pages.AdminPageModel
 @{
 }
-<div>
-    <form>
+<div >
+    <form style="display:flex;">
         <p>
             Поиск по пользователю:<br />
             <input type="text" name="textFind" id="textFind"/>
@@ -21,7 +21,24 @@
                 <option value="2">Сналача старые</option>
             </select>
         </p>
+        <p>
+            Отображать на странице:<br>
+            <select name="countOnPage" id="countOnPage"> @* выбираем из списка, сколько отображать на странице *@
+                <option value="0">Все</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </p>
+       
         <input type="submit" value="Применить фильтры" />
+        <p style="display:flex">
+            @* кнопки страниц*@
+            Перейти на страницу:<br>
+            @for (int i = 1; i <= Model.NPages; i++)
+            {
+                <button name="nPage" value="i">@i</button>
+            }
+        </p>
     </form>
 </div>
 

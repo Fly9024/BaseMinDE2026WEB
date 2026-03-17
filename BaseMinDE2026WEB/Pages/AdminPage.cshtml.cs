@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BaseMinDE2026WEB.Pages
 {
     [Authorize(Roles ="Admin")]
     public class AdminPageModel(DeWeb2026Context db) : PageModel
     {
+        public int NPages {  get; set; }//количество страниц для пагинации
+        
         public List<OrderStatusTable> OrderStatuses => db.OrderStatusTables.ToList();
         
         //получаем список со статусами для фильтрации путем добавления пункта со всеми статусами к предыдущему списку
@@ -20,8 +23,10 @@ namespace BaseMinDE2026WEB.Pages
         public List<OrderTable> UserOrders { get; set; }
         
         //для фильтрации используем тот же метод OnGet. Если параметры сортировок и фильтров не применены, то они будут игнорироваться в методе
-        public void OnGet(string textFind, int dateOrder, int statusFilter)
+        public void OnGet(string textFind, int dateOrder, int statusFilter, int countOnPage,int nPage)
         {
+            
+
             UserOrders = db.OrderTables
            .Include(x => x.IdCourseNavigation)
            .Include(x => x.IdPaymentTypeNavigation)
@@ -43,6 +48,15 @@ namespace BaseMinDE2026WEB.Pages
             {
                 UserOrders = UserOrders.Where(x=>x.IdStatus == statusFilter).ToList();
             }
+
+            NPages =countOnPage==0?1: UserOrders.Count/countOnPage;//это не совсем верная формула для подсчета количества странц, зато быстро
+
+            //отображение на странице
+            if (countOnPage != 0)
+            {
+                UserOrders = UserOrders.Skip(countOnPage* nPage).Take(countOnPage).ToList();
+            }
+
 
         }       
 
