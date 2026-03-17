@@ -36,7 +36,7 @@
             Перейти на страницу:<br>
             @for (int i = 1; i <= Model.NPages; i++)
             {
-                <button name="nPage" value="i">@i</button>
+                <button name="nPage" value="@i">@i</button>
             }
         </p>
     </form>
@@ -86,7 +86,10 @@
     document.getElementById('textFind').value = urlParams.get('textFind');
     document.getElementById('statusFilter').value = urlParams.get('statusFilter') ?? 0; @* тут еще делаем проверку на null для присваивания значений по умолчанию*@
     document.getElementById('dateOrder').value = urlParams.get('dateOrder') ?? 1;
-   
+    document.getElementById('countOnPage').value = urlParams.get('countOnPage') ?? 0;
+
+
+    
    async function statusChanged(idOrder, idStatus) {
         const URLstring = "/AdminPage?handler=ChangeStatus&idOrder=" + idOrder + "&idStatus=" + idStatus;
         fetch(URLstring);
